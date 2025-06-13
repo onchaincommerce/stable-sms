@@ -1,0 +1,50 @@
+{
+  "name": "stable-sms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "imessage-monitor": "tsx scripts/imessage-monitor.ts",
+    "test-imessage": "tsx scripts/test-integration.ts",
+    "test-imessage-send": "tsx scripts/test-imessage-send.ts",
+    "debug-delivery": "tsx scripts/debug-imessage-delivery.ts",
+    "test-full-flow": "tsx scripts/test-full-flow.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.2.1",
+    "@coinbase/agentkit": "^0.8.0",
+    "@coinbase/agentkit-langchain": "^0.3.0",
+    "@coinbase/agentkit-vercel-ai-sdk": "^0.1.0",
+    "@langchain/core": "^0.3.19",
+    "@langchain/langgraph": "^0.2.21",
+    "@langchain/openai": "^0.3.14",
+    "@solana/web3.js": "^1.98.0",
+    "@tanstack/react-query": "^5",
+    "ai": "^4.1.54",
+    "applescript": "^1.0.0",
+    "bs58": "^6.0.0",
+    "chokidar": "^3.6.0",
+    "next": "14.2.15",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-markdown": "^10.0.0",
+    "sqlite3": "^5.1.7",
+    "tsx": "^4.19.2",
+    "viem": "^2.24.1",
+    "wagmi": "^2.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/sqlite3": "^3.1.11",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
