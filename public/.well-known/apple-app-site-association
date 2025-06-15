@@ -1,0 +1,12 @@
+{
+  "appclips": {
+    "apps": [
+      "8DMZKXK684.app.vercel.sms-stable.stable-sms"
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "8DMZKXK684.app.vercel.sms-stable"
+    ]
+  }
+}
