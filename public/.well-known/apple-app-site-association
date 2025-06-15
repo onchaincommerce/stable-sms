@@ -2,6 +2,14 @@
   "appclips": {
     "apps": [
       "8DMZKXK684.app.vercel.sms-stable.stable-sms"
+    ],
+    "details": [
+      {
+        "appID": "8DMZKXK684.app.vercel.sms-stable.stable-sms",
+        "paths": [
+          "*"
+        ]
+      }
     ]
   },
   "webcredentials": {
