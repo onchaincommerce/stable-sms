@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="apple-itunes-app" content="app-clip-bundle-id=app.vercel.sms-stable.stable-sms" />
+      </head>
       <body className="bg-gray-100 dark:bg-gray-900 dark flex flex-col min-h-screen">
         {/* Header (Fixed Height) */}
         <header className="py-6 flex items-center justify-between relative">
