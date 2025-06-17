@@ -167,21 +167,52 @@ class iMessageMonitor {
     }
   }
 
-  private async sendIMessage(text: string): Promise<void> {
+  private async sendIMessage(text: string, targetPhoneNumber?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const cleanText = text.replace(/"/g, '\\"').replace(/\n/g, '\\n');
       console.log(`📤 Preparing to send iMessage: "${text.substring(0, 50)}${text.length > 50 ? '...' : ''}"`);
       
-      // Use Method 2: Activate Messages app first (most reliable for delivery)
-      const sendScript = `
+      // Use the target phone number if provided, otherwise send to yourself
+      const sendScript = targetPhoneNumber ? `
         tell application "Messages"
           activate
           delay 0.5
           try
-            set recentChat to item 1 of chats
-            send "${cleanText}" to recentChat
+            set targetService to 1st account whose service type is iMessage
+            set targetBuddy to participant "${targetPhoneNumber}" of targetService
+            send "${cleanText}" to targetBuddy
             delay 0.3
-            return "Message sent successfully"
+            return "Message sent successfully to ${targetPhoneNumber}"
+          on error errMsg
+            return "Error: " & errMsg
+          end try
+        end tell
+      ` : `
+        tell application "Messages"
+          activate
+          delay 0.5
+          try
+            -- Find the chat where you sent the original message (to yourself)
+            repeat with aChat in chats
+              if (count of participants of aChat) = 1 then
+                -- This is a chat with yourself
+                send "${cleanText}" to aChat
+                delay 0.3
+                return "Message sent successfully to yourself"
+              end if
+            end repeat
+            -- Fallback: send to yourself using your own handle
+            set myAccounts to accounts whose service type is iMessage
+            if (count of myAccounts) > 0 then
+              set myAccount to item 1 of myAccounts
+              set myHandle to id of myAccount
+              set targetBuddy to participant myHandle of myAccount
+              send "${cleanText}" to targetBuddy
+              delay 0.3
+              return "Message sent successfully (fallback)"
+            else
+              return "Error: No iMessage account found"
+            end if
           on error errMsg
             return "Error: " & errMsg
           end try
@@ -215,13 +246,15 @@ class iMessageMonitor {
 
   private async processMessage(message: Message): Promise<void> {
     try {
-      console.log(`📨 Processing message: "${message.text}" (ID: ${message.ROWID})`);
+      console.log(`📨 Processing message: "${message.text}" (ID: ${message.ROWID}) from: ${message.phone_number || 'unknown'}`);
       
       // Send to agent
       const response = await this.sendToAgent(message.text);
       console.log(`🤖 Agent response: "${response}"`);
       
-      // Send response back via iMessage
+      // Send response back via iMessage to the same sender
+      // Note: Since you're sending messages to yourself, we don't pass the phone number
+      // so it uses the "send to yourself" logic
       await this.sendIMessage(`🤖 ${response}`);
       
     } catch (error) {
